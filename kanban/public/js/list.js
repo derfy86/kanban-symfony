@@ -13,7 +13,6 @@ const listModule = {
 
     getListsFromAPI: async function () {
         try {
-            console.log(listModule.list_base_url)
             const response = await fetch(listModule.list_base_url);
 
             if (response.status !== 200) {
@@ -25,12 +24,12 @@ const listModule = {
             for (const list of lists) {
 
                 listModule.makeListInDOM(list.name, list.id);
-                for (const card of list.cards) {
-                  cardModule.makeCardInDOM(card);
-                    for (const tag of card.tags){
-                      tagModule.makeTagInDOM(tag)
-                    }
-                }
+                // for (const card of list.cards) {
+                //   cardModule.makeCardInDOM(card);
+                //     for (const tag of card.tags){
+                //       tagModule.makeTagInDOM(tag)
+                //     }
+                // }
             }
             const cardList = document.querySelector('.card-lists');
             new Sortable(cardList, {
@@ -109,7 +108,7 @@ const listModule = {
         const formData = new FormData(event.target);
         console.log('list')
   
-        const response = await fetch(listModule.list_base_url, {
+        const response = await fetch(listModule.list_base_url + '/add', {
           method: 'post',
           body: formData
         });

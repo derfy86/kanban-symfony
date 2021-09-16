@@ -32,6 +32,11 @@ class CardHasTag
      */
     private $created_at;
 
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
