@@ -1,6 +1,6 @@
 const app = {
 
-    base_url: 'http://localhost:8000',
+    base_url: 'https://localhost:8000',
   
     defaultErrorMessage: 'Désolé un problème est survenu, veuillez réessayer ultérieurement',
   

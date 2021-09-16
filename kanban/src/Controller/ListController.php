@@ -30,6 +30,6 @@ class ListController extends AbstractController
     public function index(ListContainerRepository $repository): Response
     {
       $listContainer = $this->repository->findAll();
-      return new Response($listContainer);
+      return new Response('my lists', $listContainer);
     }
 }  

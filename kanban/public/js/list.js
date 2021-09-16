@@ -13,7 +13,7 @@ const listModule = {
 
     getListsFromAPI: async function () {
         try {
-
+            console.log(listModule.list_base_url)
             const response = await fetch(listModule.list_base_url);
 
             if (response.status !== 200) {
