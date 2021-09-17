@@ -4,9 +4,13 @@ namespace App\Controller;
 use App\Entity\ListContainer;
 use App\Repository\ListContainerRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
  
 
@@ -30,8 +34,17 @@ class ListController extends AbstractController
 
     public function getAllLists(ListContainerRepository $repository): Response
     {
+      $encoders = [ new JsonEncoder()];
+      $normalizers = [new ObjectNormalizer()];
+
+      $serializer = new Serializer($normalizers, $encoders);
       $listContainer = $this->repository->findAll();
-      return new Response(json_encode($listContainer));
+      $data = $serializer->serialize($listContainer, 'json');
+      $response = new Response();
+      $response->setContent(
+        $data
+      );
+      return $response;
     }
 
     
@@ -46,7 +59,7 @@ class ListController extends AbstractController
     {
       $form = $request->request->get('name');
       $list = new ListContainer();
-      $list->setName(name: 'first')
+      $list->setName(name: $form)
       ->setPosition(position: 0);
       $em = $this->getDoctrine()->getManager();
       $em->persist($list);

@@ -19,9 +19,11 @@ const listModule = {
                 const error = await response.json();
                 throw error;
             }
-
+            
             const lists = await response.json();
+            console.log('lists',lists);
             for (const list of lists) {
+              console.log('list',list);
 
                 listModule.makeListInDOM(list.name, list.id);
                 // for (const card of list.cards) {
