@@ -75,7 +75,7 @@ const cardModule = {
           list_id: formData.get('list_id'),
           color: formData.get('color')
         };
-        const response = await fetch(`${cardModule.card_base_url}`, {
+        const response = await fetch(`${cardModule.card_base_url + '_add'}`, {
           method: 'POST',
           body: formData
         });

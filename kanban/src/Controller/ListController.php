@@ -4,10 +4,10 @@ namespace App\Controller;
 use App\Entity\ListContainer;
 use App\Repository\ListContainerRepository;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -47,9 +47,44 @@ class ListController extends AbstractController
       return $response;
     }
 
-    
     /**
-     * @Route("/lists/add")
+     * @Route("/lists/{id}")
+     * @param ListContainerRepository $repository
+     * @return Response
+     */
+
+    public function getOneList(ListContainerRepository $repository, $id): Response
+    {
+      $encoders = [ new JsonEncoder()];
+      $normalizers = [new ObjectNormalizer()];
+
+      $serializer = new Serializer($normalizers, $encoders);
+      $listContainer = $this->repository->find($id);
+      $data = $serializer->serialize($listContainer, 'json');
+      $response = new Response();
+      $response->setContent(
+        $data
+      );
+      return $response;
+    }
+
+    /**
+     * @Route("/lists/delete/{id}")
+     * @param ListContainerRepository $repository
+     * @return Response
+     */
+
+    public function deleteList(ListContainerRepository $repository, $id): Response
+    {
+      $listContainer = $this->repository->find($id);
+      $em = $this->getDoctrine()->getManager();
+      $em->remove($listContainer);
+      $em->flush();
+      return new Response('done');
+    }
+
+    /**
+     * @Route("/lists_add")
      * @param ListContainerRepository $repository
      * @return Response
      * @return Request

@@ -23,13 +23,13 @@ class ListContainerRepository extends ServiceEntityRepository
      * @return ListContainer[] Returns an array of ListContainer objects
      */
 
-    public function findAllLists(): array
-    {
-        return $this->createQueryBuilder(alias: 'p')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    // public function findBy(): array
+    // {
+    //     return $this->createQueryBuilder(alias: 'p')
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
     /*
     public function findByExampleField($value)
     {

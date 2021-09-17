@@ -21,17 +21,16 @@ const listModule = {
             }
             
             const lists = await response.json();
-            console.log('lists',lists);
             for (const list of lists) {
               console.log('list',list);
 
                 listModule.makeListInDOM(list.name, list.id);
-                // for (const card of list.cards) {
-                //   cardModule.makeCardInDOM(card);
-                //     for (const tag of card.tags){
-                //       tagModule.makeTagInDOM(tag)
-                //     }
-                // }
+                for (const card of list.cards) {
+                  cardModule.makeCardInDOM(card);
+                    for (const tag of card.tags){
+                      tagModule.makeTagInDOM(tag)
+                    }
+                }
             }
             const cardList = document.querySelector('.card-lists');
             new Sortable(cardList, {
@@ -108,19 +107,18 @@ const listModule = {
     handleAddListForm: async function (event) {
       try {
         const formData = new FormData(event.target);
-        console.log('list')
   
-        const response = await fetch(listModule.list_base_url + '/add', {
+        const response = await fetch(listModule.list_base_url + '_add', {
           method: 'post',
           body: formData
         });
   
         const newListOrError = await response.json();
+        console.log(newListOrError)
   
         if (response.status !== 200) {
           throw newListOrError;
         }
-  
         listModule.makeListInDOM(newListOrError.name, newListOrError.id);
       } catch (error) {
         alert(listModule.defaultErrorMessage);
@@ -170,7 +168,7 @@ const listModule = {
       const id = currentList.getAttribute("list-id");
       
       try {
-          const response = await fetch(`${listModule.list_base_url}/${id}`, {
+          const response = await fetch(`${listModule.list_base_url}/delete/${id}`, {
               method: 'DELETE',
           });
       
