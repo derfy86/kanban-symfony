@@ -25,12 +25,12 @@ const listModule = {
               console.log('list',list);
 
                 listModule.makeListInDOM(list.name, list.id);
-                for (const card of list.cards) {
-                  cardModule.makeCardInDOM(card);
-                    for (const tag of card.tags){
-                      tagModule.makeTagInDOM(tag)
-                    }
-                }
+                // for (const card of list.cards) {
+                //   cardModule.makeCardInDOM(card);
+                //     for (const tag of card.tags){
+                //       tagModule.makeTagInDOM(tag)
+                //     }
+                // }
             }
             const cardList = document.querySelector('.card-lists');
             new Sortable(cardList, {

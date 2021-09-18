@@ -67,13 +67,42 @@ class ListController extends AbstractController
       );
       return $response;
     }
+    
+    /**
+     * @Route("/lists_add")
+     * @param ListContainerRepository $repository
+     * @return Response
+     * @return Request
+     */
+    
+    public function createList(ListContainerRepository $repository, Request $request): Response
+    {
+      $encoders = [ new JsonEncoder()];
+      $normalizers = [new ObjectNormalizer()];
+      $serializer = new Serializer($normalizers, $encoders);
+
+      $name = $request->request->get('name');
+
+      $list = new ListContainer();
+      $list->setName(name: $name)
+      ->setPosition(position: 0);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($list);
+      $em->flush();
+      $data = $serializer->serialize($list, 'json');
+      $response = new Response();
+      $response->setContent(
+        $data
+      );
+      return $response;
+    }
 
     /**
      * @Route("/lists/delete/{id}")
      * @param ListContainerRepository $repository
      * @return Response
      */
-
+  
     public function deleteList(ListContainerRepository $repository, $id): Response
     {
       $listContainer = $this->repository->find($id);
@@ -82,23 +111,4 @@ class ListController extends AbstractController
       $em->flush();
       return new Response('done');
     }
-
-    /**
-     * @Route("/lists_add")
-     * @param ListContainerRepository $repository
-     * @return Response
-     * @return Request
-     */
-
-    public function createList(ListContainerRepository $repository, Request $request): Response
-    {
-      $form = $request->request->get('name');
-      $list = new ListContainer();
-      $list->setName(name: $form)
-      ->setPosition(position: 0);
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($list);
-      $em->flush();
-      return new Response(json_encode($list));
-    }
-}  
+  }  
