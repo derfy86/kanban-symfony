@@ -161,7 +161,7 @@ const tagModule = {
   
       try {
   
-        const response = await fetch(`${tagModule.tag_base_url}`, {
+        const response = await fetch(`${tagModule.tag_base_url + '_add'}`, {
           method: 'POST',
           body: formData,
         });
@@ -241,20 +241,20 @@ const tagModule = {
         const tagId = target.getAttribute('tag-id');
   
   
-        const response = await fetch(`${tagModule.tag_base_url}/${tagId}`, {
+        const response = await fetch(`${tagModule.tag_base_url}/delete/${tagId}`, {
           method: 'DELETE',
         });
   
-        const newTagOrError = await response.json();
         const boxAll = document.querySelectorAll('[tag-id = "' + tagId + '"]')
+        console.log(`boxAll`, boxAll)
   
         for (const box of boxAll) {
           box.remove();
         };
   
         if (response.status !== 200) {
-          throw Error(newTagOrError);
-        }
+          throw tagModule.defaultErrorMessage;
+      }
       } catch (error) {
         alert(tagModule.defaultErrorMessage);
         console.error(error);

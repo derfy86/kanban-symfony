@@ -146,13 +146,11 @@ const cardModule = {
         const cardId = box.getAttribute('card-id');
    
   
-        const response = await fetch(`${cardModule.card_base_url}/${cardId}`, {
+        const response = await fetch(`${cardModule.card_base_url}/delete/${cardId}`, {
           method: 'DELETE',
         });
   
-        const newTagOrError = await response.json();
         box.remove();
-  
   
         if (response.status !== 200) {
           throw Error(newTagOrError);
