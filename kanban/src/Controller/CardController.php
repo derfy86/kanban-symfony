@@ -83,6 +83,8 @@ class CardController extends AbstractController
       $serializer = new Serializer($normalizers, $encoders);
 
       $content = $request->request->get('content');
+      // dump($content);
+      // die();
       $color = $request->request->get('color');
       $list_id = $request->request->get('list_id');
    
@@ -90,7 +92,7 @@ class CardController extends AbstractController
       $card->setContent(content: $content)
       ->setPosition(position: 0)
       ->setColor(color: $color)
-      ->setListId(list_id: $list_id);
+      ->setListRelation(list: $list_id);
       $em = $this->getDoctrine()->getManager();
       $em->persist($card);
       $em->flush();

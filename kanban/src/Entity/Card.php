@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CardRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,15 +39,22 @@ class Card
      */
     private $created_at;
 
-    public function __construct()
-    {
-        $this->created_at = new \DateTimeImmutable();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=ListContainer::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $list;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToMany(targetEntity=Tag::class)
      */
-    private $list_id;
+    private $tag;
+
+    public function __construct()
+    {
+        $this->tag = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -100,14 +109,38 @@ class Card
         return $this;
     }
 
-    public function getListId(): ?int
+    public function getListRelation(): ?ListContainer
     {
-        return $this->list_id;
+        return $this->list;
     }
 
-    public function setListId(int $list_id): self
+    public function setListRelation(?ListContainer $list): self
     {
-        $this->list_id = $list_id;
+        $this->list = $list;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTag(): Collection
+    {
+        return $this->tag;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tag->contains($tag)) {
+            $this->tag[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tag->removeElement($tag);
 
         return $this;
     }

@@ -19,17 +19,9 @@ class ListContainerRepository extends ServiceEntityRepository
         parent::__construct($registry, ListContainer::class);
     }
 
-    /**
-     * @return ListContainer[] Returns an array of ListContainer objects
-     */
-
-    // public function findBy(): array
-    // {
-    //     return $this->createQueryBuilder(alias: 'p')
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
+    // /**
+    //  * @return ListContainer[] Returns an array of ListContainer objects
+    //  */
     /*
     public function findByExampleField($value)
     {

@@ -70,12 +70,12 @@ const cardModule = {
         
         const formData = new FormData(event.target);
   
-        let data = {
-          content: formData.get('content'),
-          list_id: formData.get('list_id'),
-          color: formData.get('color')
-        };
-        const response = await fetch(`${cardModule.card_base_url + '_add'}`, {
+        // let data = {
+        //   content: formData.get('content'),
+        //   list_id: formData.get('list_id'),
+        //   color: formData.get('color')
+        // };
+        const response = await fetch(cardModule.card_base_url + '_add', {
           method: 'POST',
           body: formData
         });
