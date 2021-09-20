@@ -12,8 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\setCircularReferenceLimit;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
  
 
 class CardController extends AbstractController
@@ -49,12 +50,10 @@ class CardController extends AbstractController
      */
 
  
-    public function getAllCardsInList(CardRepository $repository, $id): Response
+    public function getAllCardsInList(CardRepository $repository, SerializerInterface $serializer, $id): Response
     {
-      $serializer = $this->seraliz();
-
       $cards = $this->repository->find($id);
-      $data = $serializer->serialize($cards, 'json');
+      $data = $serializer->serialize($cards, 'json', ['groups' => ['card']]);
       $response = new Response();
       $response->setContent(
         $data
@@ -68,12 +67,11 @@ class CardController extends AbstractController
      * @return Response
      */
 
-    public function getOneCard(CardRepository $repository, $id): Response
+    public function getOneCard(CardRepository $repository, SerializerInterface $serializer, $id): Response
     {
-      $serializer = $this->seraliz();
 
       $card = $this->repository->find($id);
-      $data = $serializer->serialize($card, 'json');
+      $data = $serializer->serialize($card, 'json', ['groups' => ['card']]);
       $response = new Response();
       $response->setContent(
         $data
@@ -88,10 +86,8 @@ class CardController extends AbstractController
      * @return Request
      */
 
-    public function createCard(CardRepository $repository, ListContainerRepository $listContainerRepository, Request $request): Response
+    public function createCard(CardRepository $repository, ListContainerRepository $listContainerRepository, SerializerInterface $serializer, Request $request): Response
     {
-      $serializer = $this->seraliz();
-
       $content = $request->request->get('content');
       $color = $request->request->get('color');
       $id = $request->request->get('list_id');
@@ -105,7 +101,7 @@ class CardController extends AbstractController
       $em = $this->getDoctrine()->getManager();
       $em->persist($card);
       $em->flush();
-      $data = $serializer->serialize($card, 'json');
+      $data = $serializer->serialize($card, 'json', ['groups' => ['card']]);
       $response = new Response();
       $response->setContent(
         $data

@@ -22,15 +22,16 @@ const listModule = {
             
             const lists = await response.json();
             for (const list of lists) {
-              console.log('list',list);
+              console.log('list',list.cards);
 
                 listModule.makeListInDOM(list.name, list.id);
-                // for (const card of list.cards) {
-                //   cardModule.makeCardInDOM(card);
-                //     for (const tag of card.tags){
-                //       tagModule.makeTagInDOM(tag)
-                //     }
-                // }
+                for (const card of list.cards) {
+                  console.log(`card`, card)
+                  cardModule.makeCardInDOM(card);
+                    // for (const tag of card.tags){
+                    //   tagModule.makeTagInDOM(tag)
+                    // }
+                }
             }
             const cardList = document.querySelector('.card-lists');
             new Sortable(cardList, {

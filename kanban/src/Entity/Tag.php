@@ -6,6 +6,7 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TagRepository::class)
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Tag
 {
     /**
+     * @Groups("tag")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,21 +22,25 @@ class Tag
     private $id;
 
     /**
+     * @Groups("tag")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups("tag")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $color;
 
     /**
+     * @Groups("tag")
      * @ORM\Column(type="datetime_immutable")
      */
     private $created_at;
 
     /**
+     * @Groups("tag_card")
      * @ORM\ManyToMany(targetEntity=Card::class, mappedBy="tag")
      */
     private $cards;

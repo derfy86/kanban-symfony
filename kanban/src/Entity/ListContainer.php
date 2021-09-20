@@ -6,6 +6,7 @@ use App\Repository\ListContainerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ListContainerRepository::class)
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ListContainer
 {
     /**
+     * @Groups("list")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,28 +22,32 @@ class ListContainer
     private $id;
 
     /**
+     * @Groups("list")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups("list")
      * @ORM\Column(type="integer")
      */
     private $position;
 
     /**
+     * @Groups("list")
      * @ORM\Column(type="datetime_immutable")
      */
     private $created_at;
 
     /**
      * @ORM\OneToMany(targetEntity=Card::class, mappedBy="list")
+     * @Groups("cards_list")
      */
     private $cards;
 
     public function __construct()
     {
-        // $this->cards = new ArrayCollection();
+        $this->cards = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
     }
 
@@ -89,10 +95,10 @@ class ListContainer
     /**
      * @return Collection|Card[]
      */
-    // public function getCards(): Collection
-    // {
-    //     return $this->cards;
-    // }
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
 
     public function addCard(Card $card): self
     {

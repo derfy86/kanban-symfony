@@ -6,6 +6,7 @@ use App\Repository\CardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CardRepository::class)
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Card
 {
     /**
+     * @Groups("card")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,31 +22,37 @@ class Card
     private $id;
 
     /**
+     * @Groups("card")
      * @ORM\Column(type="string", length=255)
      */
     private $content;
 
     /**
+     * @Groups("card")
      * @ORM\Column(type="integer")
      */
     private $position;
 
     /**
+     * @Groups("card")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $color;
 
     /**
+     * @Groups("card")
      * @ORM\Column(type="datetime_immutable")
      */
     private $created_at;
 
     /**
+     * @Groups("list_card")
      * @ORM\ManyToOne(targetEntity=ListContainer::class, inversedBy="cards")
      */
     private $list;
 
     /**
+     * @Groups("cards_tag")
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="cards")
      */
     private $tag;

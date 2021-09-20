@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
  
 
@@ -40,11 +41,11 @@ class ListController extends AbstractController
      * @return Response
      */
 
-    public function getAllLists(ListContainerRepository $repository): Response
+    public function getAllLists(ListContainerRepository $repository, SerializerInterface $serializer): Response
     {
-      $serializer = $this->seraliz();
+      // $serializer = $this->seraliz();
       $listContainer = $this->repository->findAll();
-      $data = $serializer->serialize($listContainer, 'json');
+      $data = $serializer->serialize($listContainer, 'json', ['groups' => ['list','cards_list', 'card']]);
       $response = new Response();
       $response->setContent(
         $data
@@ -58,11 +59,10 @@ class ListController extends AbstractController
      * @return Response
      */
 
-    public function getOneList(ListContainerRepository $repository, $id): Response
+    public function getOneList(ListContainerRepository $repository, $id,  SerializerInterface $serializer): Response
     {
-      $serializer = $this->seraliz();
       $listContainer = $this->repository->find($id);
-      $data = $serializer->serialize($listContainer, 'json');
+      $data = $serializer->serialize($listContainer, 'json', ['groups' => ['list','cards_list', 'card']]);
       $response = new Response();
       $response->setContent(
         $data
@@ -89,7 +89,7 @@ class ListController extends AbstractController
       $em = $this->getDoctrine()->getManager();
       $em->persist($list);
       $em->flush();
-      $data = $serializer->serialize($list, 'json');
+      $data = $serializer->serialize($list, 'json', ['groups' => ['list']]);
       $response = new Response();
       $response->setContent(
         $data
