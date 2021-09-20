@@ -21,6 +21,14 @@ class TagController extends AbstractController
      */
     private $repository;
 
+    public function seraliz()
+        {
+          $encoders = [new JsonEncoder()];
+          $normalizers = [new ObjectNormalizer()];
+          $serializer = new Serializer($normalizers, $encoders);
+          return $serializer;
+        }
+
     public function __construct(TagRepository $repository)
     {
       $this->repository = $repository;
@@ -35,9 +43,7 @@ class TagController extends AbstractController
 
     public function getAllTags(TagRepository $repository): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
 
       $tag = $this->repository->findAll();
       $data = $serializer->serialize($tag, 'json');
@@ -56,9 +62,7 @@ class TagController extends AbstractController
 
     public function getOneCard(Tag $repository, $id): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
 
       $tag = $this->repository->find($id);
       $data = $serializer->serialize($tag, 'json');
@@ -78,9 +82,7 @@ class TagController extends AbstractController
     
     public function createTag(TagRepository $repository, Request $request): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
 
       $name = $request->request->get('name');
       $color = $request->request->get('color');

@@ -2,7 +2,9 @@
 namespace App\Controller;
 
 use App\Entity\Card;
+use App\Entity\ListContainer;
 use App\Repository\CardRepository;
+use App\Repository\ListContainerRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,10 +22,24 @@ class CardController extends AbstractController
      *  @var CardRepository
      */
     private $repository;
+    /**
+     *  @var listContainerRepository
+     */
+    private $listContainerRepository;
 
-    public function __construct(CardRepository $repository)
+    public function seraliz()
+    {
+      $encoders = [new JsonEncoder()];
+      $normalizers = [new ObjectNormalizer()];
+      $serializer = new Serializer($normalizers, $encoders);
+      return $serializer;
+    }
+    
+
+    public function __construct(CardRepository $repository, ListContainerRepository $listContainerRepository)
     {
       $this->repository = $repository;
+      $this->listContainerRepository = $listContainerRepository;
     }
 
     /**
@@ -35,9 +51,7 @@ class CardController extends AbstractController
  
     public function getAllCardsInList(CardRepository $repository, $id): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
 
       $cards = $this->repository->findAllCardByList($id);
       $data = $serializer->serialize($cards, 'json');
@@ -56,9 +70,7 @@ class CardController extends AbstractController
 
     public function getOneCard(CardRepository $repository, $id): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
 
       $card = $this->repository->find($id);
       $data = $serializer->serialize($card, 'json');
@@ -77,10 +89,8 @@ class CardController extends AbstractController
      */
 
     public function createCard(CardRepository $repository, Request $request): Response
-    {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+    { 
+      $serializer = $this->seraliz();
 
       $content = $request->request->get('content');
       // dump($content);

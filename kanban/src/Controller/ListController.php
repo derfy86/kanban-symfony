@@ -21,6 +21,14 @@ class ListController extends AbstractController
      */
     private $repository;
 
+    public function seraliz()
+    {
+      $encoders = [ new JsonEncoder()];
+      $normalizer = [new ObjectNormalizer()];
+      $serializer = new Serializer($normalizer, $encoders);
+      return $serializer;
+    }
+
     public function __construct(ListContainerRepository $repository)
     {
       $this->repository = $repository;
@@ -34,10 +42,7 @@ class ListController extends AbstractController
 
     public function getAllLists(ListContainerRepository $repository): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
       $listContainer = $this->repository->findAll();
       $data = $serializer->serialize($listContainer, 'json');
       $response = new Response();
@@ -55,10 +60,7 @@ class ListController extends AbstractController
 
     public function getOneList(ListContainerRepository $repository, $id): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
       $listContainer = $this->repository->find($id);
       $data = $serializer->serialize($listContainer, 'json');
       $response = new Response();
@@ -77,9 +79,7 @@ class ListController extends AbstractController
     
     public function createList(ListContainerRepository $repository, Request $request): Response
     {
-      $encoders = [ new JsonEncoder()];
-      $normalizers = [new ObjectNormalizer()];
-      $serializer = new Serializer($normalizers, $encoders);
+      $serializer = $this->seraliz();
 
       $name = $request->request->get('name');
 
