@@ -53,7 +53,7 @@ class CardController extends AbstractController
     {
       $serializer = $this->seraliz();
 
-      $cards = $this->repository->findAllCardByList($id);
+      $cards = $this->repository->find($id);
       $data = $serializer->serialize($cards, 'json');
       $response = new Response();
       $response->setContent(
@@ -88,21 +88,20 @@ class CardController extends AbstractController
      * @return Request
      */
 
-    public function createCard(CardRepository $repository, Request $request): Response
+    public function createCard(CardRepository $repository, ListContainerRepository $listContainerRepository, Request $request): Response
     { 
       $serializer = $this->seraliz();
 
       $content = $request->request->get('content');
-      // dump($content);
-      // die();
       $color = $request->request->get('color');
-      $list_id = $request->request->get('list_id');
+      $id = $request->request->get('list_id');
+      $listForCard  = $this->listContainerRepository->find($id);
    
       $card = new Card();
       $card->setContent(content: $content)
       ->setPosition(position: 0)
       ->setColor(color: $color)
-      ->setListRelation(list: $list_id);
+      ->setListRelation($listForCard);
       $em = $this->getDoctrine()->getManager();
       $em->persist($card);
       $em->flush();
