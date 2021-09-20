@@ -40,13 +40,12 @@ class Card
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ListContainer::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=ListContainer::class, inversedBy="cards")
      */
     private $list;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class)
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="cards")
      */
     private $tag;
 
@@ -109,12 +108,12 @@ class Card
         return $this;
     }
 
-    public function getListRelation(): ?ListContainer
+    public function getList(): ?ListContainer
     {
         return $this->list;
     }
 
-    public function setListRelation(?ListContainer $list): self
+    public function setList(?ListContainer $list): self
     {
         $this->list = $list;
 

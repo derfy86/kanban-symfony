@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,8 +34,14 @@ class Tag
      */
     private $created_at;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Card::class, mappedBy="tag")
+     */
+    private $cards;
+
     public function __construct()
     {
+        $this->cards = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
     }
 
@@ -74,6 +82,33 @@ class Tag
     public function setCreatedAt(\DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+            $card->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->cards->removeElement($card)) {
+            $card->removeTag($this);
+        }
 
         return $this;
     }
