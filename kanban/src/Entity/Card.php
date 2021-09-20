@@ -46,8 +46,9 @@ class Card
     private $created_at;
 
     /**
-     * @Groups("list_card")
+     * @Groups("lists_card")
      * @ORM\ManyToOne(targetEntity=ListContainer::class, inversedBy="cards")
+     * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      */
     private $list;
 

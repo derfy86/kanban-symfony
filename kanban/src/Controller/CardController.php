@@ -71,7 +71,7 @@ class CardController extends AbstractController
     {
 
       $card = $this->repository->find($id);
-      $data = $serializer->serialize($card, 'json', ['groups' => ['card']]);
+      $data = $serializer->serialize($card, 'json', ['groups' => ['card', 'lists_card', 'list']]);
       $response = new Response();
       $response->setContent(
         $data

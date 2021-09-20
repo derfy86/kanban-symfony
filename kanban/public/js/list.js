@@ -26,7 +26,6 @@ const listModule = {
 
                 listModule.makeListInDOM(list.name, list.id);
                 for (const card of list.cards) {
-                  console.log(`card`, card)
                   cardModule.makeCardInDOM(card);
                     // for (const tag of card.tags){
                     //   tagModule.makeTagInDOM(tag)
@@ -34,6 +33,7 @@ const listModule = {
                 }
             }
             const cardList = document.querySelector('.card-lists');
+            console.log(`cardList`, cardList)
             new Sortable(cardList, {
               onEnd: listModule.handleDropList
             });

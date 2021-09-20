@@ -19,8 +19,10 @@ const cardModule = {
       const newCard = document.importNode(cardTemplateContent, true);
       const newCardContent = newCard.querySelector('.content');
       newCardContent.textContent = card.content;
+      console.log(`card`, card)
   
       const listContainer = document.querySelector('[list-id="' + card.list_id + '"] .panel-block');
+      console.log(`listContainer`, listContainer)
       if (card) {
         new Sortable(listContainer, {});
       };

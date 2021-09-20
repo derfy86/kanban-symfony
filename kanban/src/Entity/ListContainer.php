@@ -42,6 +42,7 @@ class ListContainer
     /**
      * @ORM\OneToMany(targetEntity=Card::class, mappedBy="list")
      * @Groups("cards_list")
+     * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      */
     private $cards;
 
