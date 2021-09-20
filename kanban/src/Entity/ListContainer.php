@@ -41,7 +41,7 @@ class ListContainer
 
     public function __construct()
     {
-        $this->cards = new ArrayCollection();
+        // $this->cards = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
     }
 
@@ -89,10 +89,10 @@ class ListContainer
     /**
      * @return Collection|Card[]
      */
-    public function getCards(): Collection
-    {
-        return $this->cards;
-    }
+    // public function getCards(): Collection
+    // {
+    //     return $this->cards;
+    // }
 
     public function addCard(Card $card): self
     {
