@@ -43,9 +43,8 @@ class ListController extends AbstractController
 
     public function getAllLists(ListContainerRepository $repository, SerializerInterface $serializer): Response
     {
-      // $serializer = $this->seraliz();
       $listContainer = $this->repository->findAll();
-      $data = $serializer->serialize($listContainer, 'json', ['groups' => ['list','cards_list', 'card']]);
+      $data = $serializer->serialize($listContainer, 'json', ['groups' => ['list', 'cards_list', 'card']]);
       $response = new Response();
       $response->setContent(
         $data
@@ -62,10 +61,10 @@ class ListController extends AbstractController
     public function getOneList(ListContainerRepository $repository, $id,  SerializerInterface $serializer): Response
     {
       $listContainer = $this->repository->find($id);
-      $allCards = $listContainer->getCards();
-      $cards = $serializer->serialize($allCards, 'json', ['groups' => ['card', 'lists_card']]);
-      dump($cards) ;
-      die();
+      // $allCards = $listContainer->getCards();
+      // $cards = $serializer->serialize($allCards, 'json', ['groups' => ['card', 'lists_card', 'lists']]);
+      // dump($cards) ;
+      // die();
       // $allCardsJson = $serializer->serialize($allCards, 'json', ['groups' => ['cards_list']]);
       
       // foreach ($allCards as $value)

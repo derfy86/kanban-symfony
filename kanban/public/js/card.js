@@ -13,15 +13,14 @@ const cardModule = {
       listIdField.value = listId;
     },
   
-    makeCardInDOM: function (card) {
+    makeCardInDOM: function (card, list) {
       const cardTemplate = document.getElementById('template-card');
       const cardTemplateContent = cardTemplate.content;
       const newCard = document.importNode(cardTemplateContent, true);
       const newCardContent = newCard.querySelector('.content');
       newCardContent.textContent = card.content;
-      console.log(`card`, card)
   
-      const listContainer = document.querySelector('[list-id="' + card.list_id + '"] .panel-block');
+      const listContainer = document.querySelector('[list-id="' + list + '"] .panel-block');
       console.log(`listContainer`, listContainer)
       if (card) {
         new Sortable(listContainer, {});
@@ -72,11 +71,11 @@ const cardModule = {
         
         const formData = new FormData(event.target);
   
-        // let data = {
-        //   content: formData.get('content'),
-        //   list_id: formData.get('list_id'),
-        //   color: formData.get('color')
-        // };
+        let data = {
+          content: formData.get('content'),
+          list_id: formData.get('list_id'),
+          color: formData.get('color')
+        };
         const response = await fetch(cardModule.card_base_url + '_add', {
           method: 'POST',
           body: formData
@@ -87,7 +86,7 @@ const cardModule = {
           throw new Error(newCardOrError);
         }
   
-        cardModule.makeCardInDOM(newCardOrError);
+        cardModule.makeCardInDOM(newCardOrError, formData.get('list_id'));
   
       } catch (error) {
         alert(app.defaultErrorMessage);
