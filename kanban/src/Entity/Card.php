@@ -47,7 +47,7 @@ class Card
 
     /**
      * @Groups("lists_card")
-     * @ORM\ManyToOne(targetEntity=ListContainer::class, inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity=ListContainer::class, inversedBy="cards", cascade={"remove"})
      * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      */
     private $list;

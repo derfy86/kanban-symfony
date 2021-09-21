@@ -40,7 +40,7 @@ class ListContainer
     private $created_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="list")
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="list", cascade={"remove"})
      * @Groups("cards_list")
      */
     private $cards;
